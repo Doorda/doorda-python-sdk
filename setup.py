@@ -15,7 +15,7 @@ INSTALL_REQUIRES = ['pyhive[presto]==0.6.1', 'requests>=2.20.0']
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
-print(['doorda_sdk.' + i for i in find_packages('doorda_sdk')])
+
 setup(
      name='doorda_sdk',
      version=doorda_sdk.__version__,
