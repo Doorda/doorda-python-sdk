@@ -25,12 +25,13 @@ python setup.py install
 
 1) Connect to database
     ```python
-    from doorda_sdk import host
+    from doorda_sdk.host import client
+
     
-    conn = host.client(user="username",
-                       password="password",
-                       catalog="catalog_name",
-                       schema="schema_name")
+    conn = client.connect(user="username",
+                          password="password",
+                          catalog="catalog_name",
+                          schema="schema_name")
     cursor = conn.cursor()
     ```
 
