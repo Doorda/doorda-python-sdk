@@ -27,8 +27,7 @@ python setup.py install
     ```python
     from doorda_sdk.host import client
 
-    
-    conn = client.connect(user="username",
+    conn = client.connect(username="username",
                           password="password",
                           catalog="catalog_name",
                           schema="schema_name")
@@ -37,7 +36,6 @@ python setup.py install
 
 2) Execute Queries
     ```python
-    
     cursor.execute("SELECT * FROM table_name")
     
     # Fetch all results
@@ -59,9 +57,7 @@ python setup.py install
 3) Simplified Functions
 
     ```python
-    
     # Check database connection
-    
     results = cursor.is_connected()
     
     # List all catalogs
