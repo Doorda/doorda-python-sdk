@@ -1,7 +1,10 @@
 # Doorda Python SDK
 
-## Installation
+## Requirements
 
+Works with Python 3
+
+## Installation
 
 ### PyPi
 ```bash
@@ -69,4 +72,6 @@ python setup.py install
                               table="table_name")
     ```
 
+## Find out more
 
+To find out more about DoordaHost, go to [https://github.com/Doorda/Getting-Started](https://github.com/Doorda/Getting-Started)

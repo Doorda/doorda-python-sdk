@@ -26,16 +26,12 @@ setup(
      url="https://github.com/doorda/doorda-python-sdk",
      packages=["doorda_sdk"] + ['doorda_sdk.' + i for i in find_packages('doorda_sdk')],
      package_data={'doorda_sdk': ['LICENSE', 'examples/*.py', 'requirements.txt']},
-     download_url="https://github.com/Doorda/doorda-python-sdk/archive/1.0.2.tar.gz",
+     download_url="https://github.com/Doorda/doorda-python-sdk/archive/1.0.4.tar.gz",
      long_description_content_type="text/markdown",
      classifiers=[
-         "Programming Language :: Python :: 2",
-         "Programming Language :: Python :: 2.6",
-         "Programming Language :: Python :: 2.7",
          "Programming Language :: Python :: 3",
-         "Programming Language :: Python :: 3.3",
-         "Programming Language :: Python :: 3.4",
          "Programming Language :: Python :: 3.6",
+         "Programming Language :: Python :: 3.7",
          "License :: OSI Approved :: Apache Software License",
          "Operating System :: OS Independent",
          "Intended Audience :: Developers"
