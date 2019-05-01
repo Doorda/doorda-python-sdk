@@ -11,12 +11,16 @@ Works with Python 3
 $ pip install doorda-sdk
 ```
 
-
 ### Source
 #### Download from:
 1) https://github.com/Doorda/doorda-python-sdk/releases
-2) git clone git@github.com:doorda/doorda-python-sdk.git
 
+```bash
+wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.4.zip
+
+unzip 1.0.4.zip
+
+```
 #### Install
 ```bash
 python setup.py install
