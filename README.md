@@ -74,4 +74,4 @@ python setup.py install
 
 ## Find out more
 
-To find out more about DoordaHost, go to [https://github.com/Doorda/Getting-Started](https://github.com/Doorda/Getting-Started)
+To find out more about DoordaHost, head over to [https://github.com/Doorda/Getting-Started](https://github.com/Doorda/Getting-Started/blob/master/README.md)
