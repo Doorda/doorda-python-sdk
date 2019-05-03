@@ -10,7 +10,7 @@ except ImportError:
                 for (folder, _, fils) in os.walk(where)
                 if "__init__.py" in fils]
 
-INSTALL_REQUIRES = ['pyhive[presto]==0.6.1', 'requests>=2.20.0', 'urllib3==1.23', 'tqdm==4.28.1', 'requests==2.22.0']
+INSTALL_REQUIRES = ['pyhive[presto]==0.6.1', 'requests>=2.20.0', 'urllib3==1.24.3', 'tqdm==4.28.1', 'requests==2.22.0']
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
