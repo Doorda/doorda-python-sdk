@@ -1,5 +1,5 @@
 requests==2.21.0
-urllib3==1.22
+urllib3==1.23
 tqdm==4.28.1
 PyHive==0.6.1
 setuptools==39.1.0
