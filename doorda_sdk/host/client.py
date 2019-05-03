@@ -4,8 +4,8 @@ import requests
 from requests.auth import HTTPBasicAuth
 import atexit
 from doorda_sdk.util.decorators import timeout
-
-requests.packages.urllib3.disable_warnings()
+import urllib3
+urllib3.disable_warnings()
 
 
 def connect(*args, **kwargs):
@@ -77,7 +77,7 @@ class Cursor(presto.Cursor):
         """
         if self._state == 1:
             self.cancel()
-        super().execute(operation, parameters)
+        super(Cursor, self).execute(operation, parameters)
 
     def show_catalogs(self):
         """
