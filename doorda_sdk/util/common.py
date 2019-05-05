@@ -4,10 +4,6 @@ Many docstrings in this file are based on PEP-249, which is in the public domain
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from builtins import bytes
-from builtins import int
-from builtins import object
-from builtins import str
 from past.builtins import basestring
 from doorda_sdk.util import exc
 import abc
