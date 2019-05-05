@@ -2,17 +2,14 @@ import signal
 from functools import wraps
 import errno
 import os
-
-
-class TimeoutError(Exception):
-    pass
+from doorda_sdk.util.exc import NotConnectedError
 
 
 def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
     def decorator(func):
 
         def _handle_timeout(signum, frame):
-            raise TimeoutError(error_message)
+            raise NotConnectedError(error_message)
 
         def wrapper(*args, **kwargs):
             signal.signal(signal.SIGALRM, _handle_timeout)
@@ -20,7 +17,6 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
             try:
                 result = func(*args, **kwargs)
             finally:
-                args[0].cancel()
                 signal.alarm(0)
             return result
         return wraps(func)(wrapper)
