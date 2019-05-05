@@ -10,6 +10,7 @@ except ImportError:
                 for (folder, _, fils) in os.walk(where)
                 if "__init__.py" in fils]
 
+
 INSTALL_REQUIRES = ['future>=0.16.0', 'requests>=2.21.0']
 
 with open("README.md", "r") as fh:

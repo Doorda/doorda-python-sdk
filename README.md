@@ -1,5 +1,6 @@
 # Doorda Python SDK
 
+
 ## Requirements
 
 - Python 2.7 / Python 3
@@ -17,14 +18,13 @@ $ pip install doorda-sdk
 1) https://github.com/Doorda/doorda-python-sdk/releases
 
 ```bash
-wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.7.zip
+$ wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.7.zip
 
-unzip 1.0.7.zip
-
+$ unzip 1.0.7.zip
 ```
 #### Install
 ```bash
-python setup.py install
+$ python setup.py install
 ```
 
 ## Usage
