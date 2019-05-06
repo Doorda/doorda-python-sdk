@@ -5,7 +5,7 @@ Example Glue Script to extract table from DoordaHost into Parquet format on s3.
 
 ## Requirements
 
-- doorda_sdk=>=1.0.7
+- doorda_sdk>=1.0.7
 - requests>=2.21.0
 - pyspark==2.2.1  # Current version installed on AWS Glue job
 
