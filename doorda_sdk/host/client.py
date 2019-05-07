@@ -7,6 +7,7 @@ import doorda_sdk
 from doorda_sdk.util import common
 from doorda_sdk.util.exc import *  # noqa
 import base64
+import signal
 try:  # Python 3
     import urllib.parse as urlparse
 except ImportError:  # Python 2
@@ -67,7 +68,7 @@ class Cursor(common.DBAPICursor):
         self._state = self._STATE_NONE
         self._requests_session = requests
 
-        def exit_handler():
+        def exit_handler(*args, **kwargs):
 
             """
             Safely cancel query on exit
@@ -75,9 +76,11 @@ class Cursor(common.DBAPICursor):
             """
             try:
                 self.cancel()
+                _logger.info('Exiting')
             except ProgrammingError as _:
                 pass
-        atexit.register(exit_handler)
+        signal.signal(signal.SIGTERM, exit_handler)
+        signal.signal(signal.SIGINT, exit_handler)
 
     def _reset_state(self):
         """Reset state about the previous query in preparation for running another query"""

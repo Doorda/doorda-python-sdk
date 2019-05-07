@@ -68,7 +68,7 @@ class GlueETL:
 
         # Create Spark Dataframe
         spark_df = self.spark.createDataFrame([self.__convert_schema(row, schema_results_dict, schema_results_list)
-                                               for row in self.cursor.fetchall()],
+                                               for row in self.cursor.iter_result()],
                                               schema=pyspark_schema)
         return spark_df
 

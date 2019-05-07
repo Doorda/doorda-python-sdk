@@ -18,9 +18,9 @@ $ pip install doorda-sdk
 1) https://github.com/Doorda/doorda-python-sdk/releases
 
 ```bash
-$ wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.8.zip
+$ wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.9.zip
 
-$ unzip 1.0.8.zip
+$ unzip 1.0.9.zip
 ```
 #### Install
 ```bash
@@ -45,6 +45,11 @@ $ python setup.py install
 2) Execute Queries
     ```python
     cursor.execute("SELECT * FROM table_name")
+
+    # Returns generator of results
+    # Does not put result into memory. Iterates through rows in a streaming fashion.
+    for row in cursor.iter_result():
+        # Do something with row
     
     # Fetch all results
     rows = cursor.fetchall()

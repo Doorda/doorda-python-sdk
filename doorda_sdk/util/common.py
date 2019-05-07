@@ -82,6 +82,23 @@ class DBAPICursor(with_metaclass(abc.ABCMeta, object)):
         if seq_of_parameters:
             self.execute(operation, seq_of_parameters[-1])
 
+    def iter_result(self):
+        """Returns an iterator of rows in result set, or ``None`` when no more data is available.
+        An :py:class:`~pyhive.exc.Error` (or subclass) exception is raised if the previous call to
+        :py:meth:`execute` did not produce any result set or no call was issued yet.
+        """
+        if self._state == self._STATE_NONE:
+            raise exc.ProgrammingError("No query yet")
+
+        while self._data or self._state != self._STATE_FINISHED:
+            # Sleep until we're done or we have some data to return
+            self._fetch_while(lambda: not self._data and self._state != self._STATE_FINISHED)
+            if not self._data:
+                yield None
+            else:
+                self._rownumber += 1
+                yield self._data.popleft()
+
     def fetchone(self):
         """Fetch the next row of a query result set, returning a single sequence, or ``None`` when
         no more data is available.
