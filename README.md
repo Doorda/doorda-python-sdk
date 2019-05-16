@@ -18,9 +18,9 @@ $ pip install doorda-sdk
 1) https://github.com/Doorda/doorda-python-sdk/releases
 
 ```bash
-$ wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.9.zip
+$ wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.10.zip
 
-$ unzip 1.0.9.zip
+$ unzip 1.0.10.zip
 ```
 #### Install
 ```bash

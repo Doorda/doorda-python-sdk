@@ -68,19 +68,21 @@ class Cursor(common.DBAPICursor):
         self._state = self._STATE_NONE
         self._requests_session = requests
 
-        def exit_handler(*args, **kwargs):
+        def exit_handler():
 
             """
             Safely cancel query on exit
 
             """
-            try:
-                self.cancel()
-                _logger.info('Exiting')
-            except ProgrammingError as _:
-                pass
+            if self._state == self._STATE_RUNNING:
+                try:
+                    self.cancel()
+                    _logger.info('Exiting')
+                except ProgrammingError as _:
+                    pass
         signal.signal(signal.SIGTERM, exit_handler)
         signal.signal(signal.SIGINT, exit_handler)
+        atexit.register(exit_handler)
 
     def _reset_state(self):
         """Reset state about the previous query in preparation for running another query"""

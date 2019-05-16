@@ -12,7 +12,7 @@ except ImportError:
                 if "__init__.py" in fils]
 
 
-INSTALL_REQUIRES = ["doorda_sdk>=1.0.8", "requests>=2.21.0"]
+INSTALL_REQUIRES = ["doorda_sdk>=1.0.10", "requests>=2.21.0"]
 
 setup(
     name="doordahost_etl",
