@@ -8,6 +8,8 @@ from doorda_sdk.util import common
 from doorda_sdk.util.exc import *  # noqa
 import base64
 import signal
+from doorda_sdk.util.permissions_tree import Node
+import warnings
 try:  # Python 3
     import urllib.parse as urlparse
 except ImportError:  # Python 2
@@ -140,7 +142,8 @@ class Cursor(common.DBAPICursor):
             sql = operation
         else:
             sql = operation % _escaper.escape_args(parameters)
-
+        sql = sql.strip()
+        sql = sql.replace(';', '') if sql.endswith(';') else sql
         self._reset_state()
 
         self._state = self._STATE_RUNNING
@@ -234,6 +237,16 @@ class Cursor(common.DBAPICursor):
         self.execute("SHOW CATALOGS")
         return self.fetchall()
 
+    def show_schema(self, catalog=""):
+        if catalog:
+            pass
+        elif not catalog and self.catalog:
+            catalog = self.catalog
+        else:
+            raise ProgrammingError("Catalog not valid")
+        self.execute("SHOW SCHEMAS FROM {catalog}".format(catalog=catalog))
+        return self.fetchall()
+
     def show_tables(self, catalog="", schema=""):
         query = "SHOW TABLES FROM {catalog}.{schema}"
         if catalog and schema:
@@ -297,3 +310,31 @@ class Cursor(common.DBAPICursor):
         if response.status_code != requests.codes.ok:
             raise NotConnectedError("Cursor not connected")
         return True
+
+    def permissions(self):
+        """
+        Example:
+
+        |Catalogs   | Schemas   | Table Names
+        __________________________________________
+        |-- DoordaBiz_Snapshot
+        |           |-- DoordaBiz_Snapshot
+        |           |           |-- register_company_profile
+        |-- DoordaBiz_Ledger
+        |           |-- DoordaBiz_Ledger
+        |           |           |-- register_company_profile_ledger
+
+        :return:
+        """
+        warnings.warn("Experimental Function", UserWarning)
+        catalogs = self.show_catalogs()
+        root = Node('')
+        root.children = [Node(str(catalog[0])) for catalog in catalogs if catalog[0] != 'system']
+
+        for cat in root.children:
+            schemas = self.show_schema(cat.value)
+            cat.children = [Node(schema[0]) for schema in schemas if schema[0] != "information_schema"]
+            for sche in cat.children:
+                tables = self.show_tables(cat.value, sche.value)
+                sche.children = [Node(str(table[0])) for table in tables]
+        return root
