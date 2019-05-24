@@ -18,9 +18,9 @@ $ pip install doorda-sdk
 1) https://github.com/Doorda/doorda-python-sdk/releases
 
 ```bash
-$ wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.10.zip
+$ wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.11.zip
 
-$ unzip 1.0.10.zip
+$ unzip 1.0.11.zip
 ```
 #### Install
 ```bash
@@ -70,11 +70,21 @@ $ python setup.py install
 3) Simplified Functions
 
     ```python
+    # List Permissions
+    ## Permissions are shown as a hierarical tree structure
+    ### Level 1 = Catalog, Level 2 = Schemas, Level 3 = Table Names
+
+    permissions = cursor.permissions()
+    print(permissions)
+
     # Check database connection
     results = cursor.is_connected()
     
     # List all catalogs
     rows = cursor.show_catalogs()
+
+    # List all schemas
+    rows = cursor.show_schemas("catalog_name")
 
     # List all tables
     rows = cursor.show_tables("catalog_name", "schema_name")

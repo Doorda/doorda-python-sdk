@@ -27,7 +27,7 @@ setup(
      url="https://github.com/doorda/doorda-python-sdk",
      packages=["doorda_sdk"] + ['doorda_sdk.' + i for i in find_packages('doorda_sdk')],
      package_data={'doorda_sdk': ['LICENSE', 'requirements.txt']},
-     download_url="https://github.com/Doorda/doorda-python-sdk/archive/1.0.10.tar.gz",
+     download_url="https://github.com/Doorda/doorda-python-sdk/archive/1.0.11.tar.gz",
      long_description_content_type="text/markdown",
      classifiers=[
          "Programming Language :: Python :: 2.7",
