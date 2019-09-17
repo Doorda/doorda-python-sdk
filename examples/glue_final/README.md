@@ -1,47 +1,42 @@
 # Example ETL Script (AWS Glue Job)
 
-Example Glue Script to extract table from DoordaHost into Parquet format on s3.
+Example Glue Script to extract data from DoordaHost into Parquet format on s3.  
 
+1) `sample_glue_script_all.py`  
+    Extracts all tables from indicated Catalog into S3  
+    
+2) `sample_glue_script_single.py`   
+    Extracts table indicated in `TABLENAME` parameter into S3  
 
 ## Requirements
 
-- doorda_sdk>=1.0.10
-- requests>=2.21.0
-- pyspark==2.2.1  # Current version installed on AWS Glue job
-
+- pyspark==2.4  # Current version installed on AWS Glue job  
+- DoordaHost JDBC driver [here](https://github.com/Doorda/drivers-cli/raw/master/doordahost/jdbc/DoordaHostJDBC_309d.jar)
+  
 ### Usage
 
-1) Make sure that you're in `examples/glue` directory
-
-2) To create a zip folder of all the package requirements, run:
-
-```bash
-$ ./build.sh
-```
-
-3) Copy `doordahost_etl_glue.zip` into your s3 bucket
-
-4) Click on `Add job` in AWS Glue
+1) Click on `Add job` in AWS Glue  
 
     **Parameters**
     - `Name`: {Provide name for job}
     - `IAM role`: {Select iam role}
         - PUT/GET/DELETE object from bucket
-    - `Type`: Spark
-    - `This job runs`: A new script to be authored by you
-    - `ETL language`: Python
+    - `Type`: Spark  
+    - `Glue version`: Spark 2.4, Python 3 (Glue version 1.0)  
+    - `This job runs`: A new script to be authored by you  
+    - `Script file name`: {Provide name for script}
     - `S3 path where the script is stored`: {provide path to store authored script}
     - `Temporary directory`: {provide path to store temporary results}
 
 
-    ![](assets/glue_part1.png)
+    ![](assets/glue_part_1.png)
 
 
-    - `Python library path`: {provide path that `doordahost_etl_glue.zip` was uploaded to}
+    - `Dependent jars path`: {provide path to bucket on S3 with DoordaHost JDBC driver file}
     - `Maximum capacity`: {Adjust depending on needs}
     - `Max concurrency`: {Adjust depending on needs}
 
-    ![](assets/glue_part2.png)
+    ![](assets/glue_part_2.png)
 
 
     - `Job parameters`:
@@ -59,7 +54,7 @@ $ ./build.sh
     but will be expose to anyone with access to this job. It is recommended to
     use AWS Systems Manager (Parameter Store) to store and retrieve these details instead.
 
-    ![](assets/glue_part3.png)
+    ![](assets/glue_part_3.png)
 
 
-5) Copy `sample_glue_script.py` into Script Editor and amend as needed.
+2) Copy `sample_glue_script_all.py` or `sample_glue_script_single.py` into Script Editor and amend as needed.
