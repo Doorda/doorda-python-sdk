@@ -1,9 +1,12 @@
 # Doorda Python SDK
-
+[![GitHub Action](https://github.com/doorda/doorda-python-sdk/workflows/Unit%20Tests/badge.svg)](https://github.com/Doorda/doorda-python-sdk/actions?query=workflow%3A%22Unit+Tests%22)
+[![GitHub Action](https://github.com/doorda/doorda-python-sdk/workflows/Upload%20Python%20Package/badge.svg)](https://github.com/Doorda/doorda-python-sdk/actions?query=workflow%3A%22Upload+Python+Package%22)
+[![PyPI version](https://badge.fury.io/py/doorda-sdk.svg)](https://badge.fury.io/py/doorda-sdk)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/doorda-sdk)](https://pypi.python.org/pypi/doorda-sdk/)
 
 ## Requirements
 
-- Python 2.7 / Python 3
+- Python 3.6/3.7
 - [DoordaHost Account](https://doorda.com)
 
 ## Installation
@@ -11,20 +14,6 @@
 ### PyPi
 ```bash
 $ pip install doorda-sdk
-```
-
-### Source
-#### Download from:
-1) https://github.com/Doorda/doorda-python-sdk/releases
-
-```bash
-$ wget https://github.com/Doorda/doorda-python-sdk/archive/1.0.11.zip
-
-$ unzip 1.0.11.zip
-```
-#### Install
-```bash
-$ python setup.py install
 ```
 
 ## Usage
@@ -71,7 +60,7 @@ $ python setup.py install
 
     ```python
     # List Permissions
-    ## Permissions are shown as a hierarical tree structure
+    ## Permissions are shown as a hierarchical tree structure
     ### Level 1 = Catalog, Level 2 = Schemas, Level 3 = Table Names
 
     permissions = cursor.permissions()
