@@ -37,8 +37,13 @@ $ pip install doorda-sdk
 
     # Returns generator of results
     # Does not put result into memory. Iterates through rows in a streaming fashion.
+    # DEPRECATED
     for row in cursor.iter_result():
         # Do something with row
+    # Use:
+    for row in cursor:
+        # Do something with row
+
     
     # Fetch all results
     rows = cursor.fetchall()

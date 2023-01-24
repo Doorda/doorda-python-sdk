@@ -58,7 +58,7 @@ class TestCursor(unittest.TestCase):
             {"auth": HTTPBasicAuth("test", "test")},
         )
 
-    @mock.patch("requests.post")
+    @mock.patch("requests.Session.post")
     def test_presto_fetchall(self, mock_requests):
         mock_requests.return_value.json = get_json_get_0
         mock_requests.return_value.status_code = 200
@@ -66,7 +66,7 @@ class TestCursor(unittest.TestCase):
         results = self.cursor.fetchone()
         self.assertEqual(list(results), RESP_DATA_GET_0["data"][0])
 
-    @mock.patch("requests.post")
+    @mock.patch("requests.Session.post")
     def test_presto_error(self, mock_requests):
         mock_requests.return_value.json = get_json_get_error_0
         mock_requests.return_value.status_code = 200

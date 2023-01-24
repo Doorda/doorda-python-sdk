@@ -7,11 +7,22 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from past.builtins import basestring
 from doorda_sdk.util import exc
+from doorda_sdk.util.decorators import deprecated
 import abc
 import collections
 import time
 from future.utils import with_metaclass
 from itertools import islice
+
+LENGTH_TYPES = ["char", "varchar"]
+PRECISION_TYPES = [
+    "time",
+    "time with time zone",
+    "timestamp",
+    "timestamp with time zone",
+    "decimal",
+]
+SCALE_TYPES = ["decimal"]
 
 
 class DBAPICursor(with_metaclass(abc.ABCMeta, object)):
@@ -30,12 +41,33 @@ class DBAPICursor(with_metaclass(abc.ABCMeta, object)):
         """Reset state about the previous query in
         preparation for running another query"""
         # State to return as part of DB-API
-        self._rownumber = 0
+        self._rownumber = -1
 
         # Internal helper state
         self._state = self._STATE_NONE
         self._data = collections.deque()
         self._columns = None
+
+    @staticmethod
+    def from_column(column):
+        type_signature = column["typeSignature"]
+        raw_type = type_signature["rawType"]
+        arguments = type_signature["arguments"]
+        return (
+            column["name"],  # name
+            column["type"],  # type_code
+            None,  # display_size
+            arguments[0]["value"]
+            if raw_type in LENGTH_TYPES
+            else None,  # internal_size
+            arguments[0]["value"]
+            if raw_type in PRECISION_TYPES
+            else None,  # precision
+            arguments[1]["value"]
+            if raw_type in SCALE_TYPES
+            else None,  # scale
+            None,  # null_ok
+        )
 
     def _fetch_while(self, fn):
         while fn():
@@ -60,7 +92,7 @@ class DBAPICursor(with_metaclass(abc.ABCMeta, object)):
     @property
     def rowcount(self):
         """By default, return -1 to indicate that this is not supported."""
-        return -1
+        return self._rownumber
 
     @abc.abstractmethod
     def execute(self, operation, parameters=None):
@@ -87,6 +119,7 @@ class DBAPICursor(with_metaclass(abc.ABCMeta, object)):
         if seq_of_parameters:
             self.execute(operation, seq_of_parameters[-1])
 
+    @deprecated("Iterate over `cursor` instead")
     def iter_result(self):
         """Returns an iterator of rows in result set,
         or ``None`` when no more data is available.
