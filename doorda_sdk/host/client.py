@@ -268,7 +268,11 @@ class Cursor(common.DBAPICursor):
         ), "Should be running if processing response"
         self._nextUri = response_json.get("nextUri")
         self._columns = response_json.get("columns")
-        self.elapsed_time = response_json["stats"]["elapsedTimeMillis"] / 1_000
+        self.elapsed_time = (
+            response_json["stats"]["elapsedTimeMillis"] / 1_000
+            if "elapsedTimeMillis" in response_json["stats"]
+            else None
+        )
         self.number_of_nodes = response_json["stats"]["nodes"]
         if "X-Presto-Clear-Session" in response.headers:
             propname = response.headers["X-Presto-Clear-Session"]
