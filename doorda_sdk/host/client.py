@@ -26,8 +26,8 @@ except ImportError:  # Python 2
 apilevel = "2.0"
 threadsafety = 2  # Threads may share the module and connections.
 paramstyle = (
-    "pyformat"
-)  # Python extended format codes, e.g. ...WHERE name=%(name)s
+    "pyformat"  # Python extended format codes, e.g. ...WHERE name=%(name)s
+)
 
 _logger = logging.getLogger(__name__)
 _escaper = common.ParamEscaper()
@@ -80,7 +80,9 @@ class Cursor(common.DBAPICursor):
         )
         self._arraysize = 1
         self._state = self._STATE_NONE
-        self._requests_session = requests
+        self._requests_session = requests.Session()
+        self.elapsed_time = None
+        self.number_of_nodes = None
 
         def exit_handler():
 
@@ -90,7 +92,7 @@ class Cursor(common.DBAPICursor):
             """
             if self._state == self._STATE_RUNNING:
                 try:
-                    self.cancel()
+                    self.close()
                     _logger.info("Exiting")
                 except ProgrammingError:
                     pass
@@ -108,6 +110,8 @@ class Cursor(common.DBAPICursor):
         self._nextUri = None
         self._columns = None
         self._state = self._STATE_NONE
+        self.elapsed_time = None
+        self.number_of_nodes = None
 
     @property
     def description(self):
@@ -134,13 +138,13 @@ class Cursor(common.DBAPICursor):
         return [
             # name, type_code, display_size, internal_size,
             # precision, scale, null_ok
-            (col["name"], col["type"], None, None, None, None, True)
+            self.from_column(col)
             for col in self._columns
         ]
 
     def execute(self, operation, parameters=None):
         """Prepare and execute a database operation (query or command).
-                Return values are not defined.
+        Return values are not defined.
         """
         headers = {
             "X-Presto-Catalog": self.catalog,
@@ -180,7 +184,7 @@ class Cursor(common.DBAPICursor):
             url,
             data=sql.encode("utf-8"),
             headers=headers,
-            **self._requests_kwargs
+            **self._requests_kwargs,
         )
         self._process_response(response)
 
@@ -192,7 +196,6 @@ class Cursor(common.DBAPICursor):
                 self._state == self._STATE_FINISHED
             ), "Should be finished if nextUri is None"
             return
-
         response = self._requests_session.delete(
             self._nextUri, **self._requests_kwargs
         )
@@ -203,6 +206,10 @@ class Cursor(common.DBAPICursor):
             )
 
         self._state = self._STATE_FINISHED
+
+    def close(self):
+        self.cancel()
+        self._requests_session.close()
 
     def poll(self):
         """Poll for and return the raw status data
@@ -261,6 +268,8 @@ class Cursor(common.DBAPICursor):
         ), "Should be running if processing response"
         self._nextUri = response_json.get("nextUri")
         self._columns = response_json.get("columns")
+        self.elapsed_time = response_json["stats"]["elapsedTimeMillis"] / 1_000
+        self.number_of_nodes = response_json["stats"]["nodes"]
         if "X-Presto-Clear-Session" in response.headers:
             propname = response.headers["X-Presto-Clear-Session"]
             self._session_props.pop(propname, None)
@@ -372,7 +381,7 @@ class Cursor(common.DBAPICursor):
             url,
             data="SELECT 1".encode("utf-8"),
             headers=headers,
-            **self._requests_kwargs
+            **self._requests_kwargs,
         )
         if response.status_code != requests.codes.ok:
             raise NotConnectedError("Cursor not connected")
@@ -403,7 +412,10 @@ class Cursor(common.DBAPICursor):
         ]
 
         for cat in root.children:
-            schemas = self.show_schema(cat.value)
+            if cat.value not in ["doorda", "file"]:
+                schemas = [(cat.value,)]
+            else:
+                schemas = self.show_schema(cat.value)
             cat.children = [
                 Node(schema[0])
                 for schema in schemas
