@@ -58,13 +58,13 @@ class DBAPICursor(with_metaclass(abc.ABCMeta, object)):
             column["type"],  # type_code
             None,  # display_size
             arguments[0]["value"]
-            if raw_type in LENGTH_TYPES
+            if raw_type in LENGTH_TYPES and arguments
             else None,  # internal_size
             arguments[0]["value"]
-            if raw_type in PRECISION_TYPES
+            if raw_type in PRECISION_TYPES and arguments
             else None,  # precision
             arguments[1]["value"]
-            if raw_type in SCALE_TYPES
+            if raw_type in SCALE_TYPES and arguments
             else None,  # scale
             None,  # null_ok
         )
