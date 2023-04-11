@@ -20,7 +20,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="doorda_sdk",
-    version="2.0.0",
+    version="2.0.1",
     author="Samuel Tan",
     author_email="samuel@doorda.com",
     description="Doorda SDK for access to Hosted Platform",
