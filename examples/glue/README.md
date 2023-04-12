@@ -27,12 +27,10 @@ Example Glue Script to extract data from DoordaHost into Parquet format on s3.
     - `Type`: Spark  
     - `Glue version`: Glue 4.0 - Supports spark 3.3, Scala 2, Python 3
     - `Language`: Python 3
-    - `This job runs`: A new script to be authored by you  
     - `Script Path`: {provide path to store authored script}
     - `Temporary Path`: {provide path to store temporary results}
     - `Dependent jars path`: {provide path to bucket on S3 with DoordaHost JDBC driver file (for example, s3://bucket/doordahost-jdbc-403d.jar)}
-    - `Maximum capacity`: {Adjust depending on needs}
-    - `Max concurrency`: {Adjust depending on needs}
+    - `Requested number of workers`: {Adjust depending on needs}
     ![](assets/glue_2.png)
     ![](assets/glue_3.png)
     ![](assets/glue_4.png)
