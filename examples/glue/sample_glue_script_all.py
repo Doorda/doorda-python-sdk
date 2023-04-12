@@ -103,10 +103,6 @@ table_list_df = jdbc_conn.option(
 
 
 for row in table_list_df.rdd.collect():
-    if row.table_name != "register_company_charge_ledger":
-        continue
-    print(row.table_name)
-
     # Get Table Schema
     table_schema_df = jdbc_conn.option(
         "dbtable",
